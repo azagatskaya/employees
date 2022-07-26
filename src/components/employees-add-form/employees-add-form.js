@@ -14,9 +14,16 @@ class EmployeesAddForm extends Component {
       [e.target.name]: e.target.value,
     });
   };
+
+  onSubmit = (e, name, salary) => {
+    this.props.onAdd(e, name, salary);
+    this.setState({
+      name: "",
+      salary: "",
+    });
+  };
   render() {
     const { name, salary } = this.state;
-    const { onAdd } = this.props;
     return (
       <div className="app-add-form">
         <h3>Добавьте нового сотрудника</h3>
@@ -41,7 +48,7 @@ class EmployeesAddForm extends Component {
           <button
             type="submit"
             className="btn btn-outline-light"
-            onClick={() => onAdd(name, salary)}
+            onClick={(e) => this.onSubmit(e, name, salary)}
           >
             Добавить
           </button>
