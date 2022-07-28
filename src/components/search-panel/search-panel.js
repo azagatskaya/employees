@@ -1,10 +1,21 @@
-import styles from './search-panel.module.scss';
+import React from "react";
 
-const SearchPanel = () => {
-	return (
-		<input type="text" className="form-control search-input"
-		placeholder='Найти сотрудника'/>
-	)
-}
+import styles from "./search-panel.module.scss";
+
+const SearchPanel = ({ onUpdateSearch }) => {
+  const onSearchChange = (e) => {
+    e.preventDefault();
+    const string = e.target.value;
+    onUpdateSearch(string);
+  };
+  return (
+    <input
+      type="text"
+      className="form-control search-input"
+      placeholder="Найти сотрудника"
+      onChange={(e) => onSearchChange(e)}
+    />
+  );
+};
 
 export default SearchPanel;

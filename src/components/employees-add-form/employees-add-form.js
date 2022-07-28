@@ -24,9 +24,16 @@ class EmployeesAddForm extends Component {
   };
   render() {
     const { name, salary } = this.state;
+    const { addEmployeeError } = this.props;
+    const errorMessage = addEmployeeError ? (
+      <span className="error">Данные введены не полностью</span>
+    ) : (
+      ""
+    );
     return (
       <div className="app-add-form">
         <h3>Добавьте нового сотрудника</h3>
+        {errorMessage}
         <form className="add-form d-flex">
           <input
             type="text"

@@ -20,40 +20,45 @@ export default function App() {
       id: 3,
     },
   ]);
+  const [visibleData, setVisibleData] = React.useState(data);
   const [maxId, setMaxId] = React.useState(data.length + 1);
+  const [addEmployeeError, setAddEmployeeError] = React.useState(false);
+  const [filter, setFilter] = React.useState("all");
 
+  React.useEffect(() => {
+    setVisibleData(data);
+  }, [data]);
   const deleteItem = (id) => {
     setData((prevState) => prevState.filter((item) => item.id !== id));
   };
   const addItem = (e, newName, newSalary) => {
     e.preventDefault();
-    const newItem = {
-      name: newName,
-      salary: newSalary,
-      isIncreased: false,
-      isRised: false,
-      id: maxId,
-    };
-    setData((prevState) => prevState.concat(newItem));
-    setMaxId((prevState) => prevState + 1);
+    try {
+      if (
+        newName !== "" &&
+        newName.length > 3 &&
+        newSalary !== "" &&
+        newSalary !== 0
+      ) {
+        const newItem = {
+          name: newName,
+          salary: newSalary,
+          isIncreased: false,
+          isRised: false,
+          id: maxId,
+        };
+        setData((prevState) => prevState.concat(newItem));
+        setMaxId((prevState) => prevState + 1);
+        setAddEmployeeError(false);
+      } else {
+        throw new SyntaxError("Ошибка: Введены не все данные");
+      }
+    } catch (e) {
+      setAddEmployeeError(true);
+    }
   };
-  //   const onToggleIncrease = (id) => {
-  //     setData((prevState) =>
-  //       prevState.map((el) => {
-  //         if (el.id === id) {
-  //           return {
-  //             ...el,
-  //             isIncreased: !el.isIncreased,
-  //             isRised: !el.isRised,
-  //           };
-  //         } else {
-  //           return el;
-  //         }
-  //       })
-  //     );
-  //   };
+
   const onToggleProp = (id, prop) => {
-    console.log(prop);
     setData((prevState) =>
       prevState.map((el) => {
         if (el.id === id) {
@@ -67,6 +72,36 @@ export default function App() {
       })
     );
   };
+  const onUpdateSearch = (string) => {
+    if (string.length > 0) {
+      setVisibleData(
+        data.filter((el) => {
+          return el.name.indexOf(string) > -1;
+        })
+      );
+    } else {
+      setVisibleData(data);
+    }
+  };
+  const onFilterSelect = (e, filterType) => {
+    let filteredData;
+    switch (filterType) {
+      case "toBeRised":
+        filteredData = data.filter((el) => {
+          return el.isRised;
+        });
+        break;
+      case "moreThan1000":
+        filteredData = data.filter((el) => {
+          return el.salary >= 1000;
+        });
+        break;
+      default:
+        filteredData = data;
+    }
+    setVisibleData(filteredData);
+    setFilter(filterType);
+  };
   const employeesCount = data.length;
   const isIncreasedCount = data.filter((el) => el.isIncreased).length;
   return (
@@ -77,17 +112,15 @@ export default function App() {
       />
 
       <div className={styles.searchPanel}>
-        <SearchPanel />
-        <AppFilter />
+        <SearchPanel onUpdateSearch={onUpdateSearch} />
+        <AppFilter filter={filter} onFilterSelect={onFilterSelect} />
       </div>
       <EmployeesList
-        data={data}
+        data={visibleData}
         onDelete={(id) => deleteItem(id)}
         onToggleProp={onToggleProp}
       />
-      <EmployeesAddForm
-        onAdd={(e, newName, newSalary) => addItem(e, newName, newSalary)}
-      />
+      <EmployeesAddForm onAdd={addItem} addEmployeeError={addEmployeeError} />
     </div>
   );
 }

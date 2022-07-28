@@ -1,6 +1,7 @@
 import "./employees-list-item.scss";
 
 export default function EmployeesListItem({
+  id,
   name,
   salary,
   onDelete,
@@ -19,7 +20,9 @@ export default function EmployeesListItem({
     <li className={classNames}>
       <span
         className="list-group-item-label"
-        onClick={onToggleProp}
+        onClick={(e) =>
+          onToggleProp(id, e.currentTarget.getAttribute("data-toggle"))
+        }
         data-toggle="isRised"
       >
         {name}
