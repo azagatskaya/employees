@@ -2,7 +2,7 @@ import styles from "./app-filter.module.scss";
 
 const AppFilter = ({ onFilterSelect, filter }) => {
   const onBtnClick = (e) => {
-    onFilterSelect(e, e.currentTarget.getAttribute("data-filter"));
+    onFilterSelect(e.currentTarget.getAttribute("data-filter"));
   };
   const buttonsData = [
     { name: "all", label: "Все сотрудники" },

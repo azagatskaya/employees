@@ -72,6 +72,7 @@ export default function App() {
       })
     );
   };
+
   const onUpdateSearch = (string) => {
     if (string.length > 0) {
       setVisibleData(
@@ -83,7 +84,8 @@ export default function App() {
       setVisibleData(data);
     }
   };
-  const onFilterSelect = (e, filterType) => {
+
+  const onFilterSelect = (filterType) => {
     let filteredData;
     switch (filterType) {
       case "toBeRised":
@@ -102,6 +104,7 @@ export default function App() {
     setVisibleData(filteredData);
     setFilter(filterType);
   };
+
   const employeesCount = data.length;
   const isIncreasedCount = data.filter((el) => el.isIncreased).length;
   return (

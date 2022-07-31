@@ -36,7 +36,9 @@ export default function EmployeesListItem({
         <button
           type="button"
           className="btn-cookie btn-sm "
-          onClick={onToggleProp}
+          onClick={(e) =>
+            onToggleProp(id, e.currentTarget.getAttribute("data-toggle"))
+          }
           data-toggle="isIncreased"
         >
           <i className="fas fa-cookie"></i>
